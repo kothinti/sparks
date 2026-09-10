@@ -444,6 +444,8 @@
             const alumniAccess =
                 product.alumni_access || product.alumniAccess;
 
+            console.log("alumniAccess: "+alumniAccess);
+
             const isAlumniAccessActive =
                 alumniAccess && alumniAccess.active === true;
 
@@ -484,8 +486,6 @@
                     const newText = isAlumniAccessActive
                         ? 'Alumni Registration Open'
                         : buttonTextMap[buttonState] || buttonState;
-
-                      console.log("Button Label: "+newText);
                       applyButton.textContent = newText;
                 }
 
