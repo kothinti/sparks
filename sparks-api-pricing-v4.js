@@ -261,31 +261,46 @@
           "This program is currently full. Join the waitlist to be notified if a spot becomes available.";
       });
     }
-    updatePurchaseButton(e, t) {
-      const i = t.purchase_button_state || t.purchaseButtonState,
-        s = e.querySelectorAll("a.btn-apply-now");
-      0 !== s.length &&
-        s.forEach((e) => {
-          if (i && "None" !== i) {
-            const t = e.parentElement;
-            t && t.classList.contains("btn-apply-now")
-              ? (t.style.display = "")
-              : (e.style.display = "");
-            const s =
-              {
-                Register: "Register Now!",
-                Apply: "Apply Now!",
-                JoinWaitlist: "Join Waitlist",
-                ReserveSlot: "Reserve Slot",
-              }[i] || i;
-            e.textContent = s;
-          } else {
-            const t = e.parentElement;
-            t && t.classList.contains("btn-apply-now")
-              ? (t.style.display = "none")
-              : (e.style.display = "none");
-          }
-        });
+    updatePurchaseButton(productCard, product) {
+      const buttonState =
+        product.purchase_button_state || product.purchaseButtonState;
+    
+      const alumniAccess =
+        product.alumni_access || product.alumniAccess;
+    
+      const isAlumniRegistration =
+        buttonState === "Register" &&
+        alumniAccess?.active === true;
+    
+      const applyButtons =
+        productCard.querySelectorAll("a.btn-apply-now");
+    
+      applyButtons.forEach((applyButton) => {
+        const wrapper = applyButton.parentElement;
+    
+        const buttonContainer =
+          wrapper?.classList.contains("btn-apply-now")
+            ? wrapper
+            : applyButton;
+    
+        if (!buttonState || buttonState === "None") {
+          buttonContainer.style.display = "none";
+          return;
+        }
+    
+        buttonContainer.style.display = "";
+    
+        const buttonTextMap = {
+          Register: "Register Now!",
+          Apply: "Apply Now!",
+          JoinWaitlist: "Join Waitlist",
+          ReserveSlot: "Reserve Slot",
+        };
+    
+        applyButton.textContent = isAlumniRegistration
+          ? "Alumni Registration Open"
+          : buttonTextMap[buttonState] || buttonState;
+      });
     }
     displaySessions(e, t) {
       const i = t.sessions || [],
